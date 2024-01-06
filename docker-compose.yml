@@ -1,6 +1,20 @@
 version: '2'
 
 services:
+    service:
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./docker/services/Dockerfile
+        ports:
+            - 8000:8000
+    backend:
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./docker/backend/Dockerfile
+        ports:
+            - 8080:8080
     frontend:
         restart: unless-stopped
         build:
