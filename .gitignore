@@ -1,0 +1,70 @@
+# IntelliJ IDEA
+.idea/
+
+# PyCharm
+*.iml
+*.iws
+*.ipr
+
+# Compiled Java classes
+*.class
+
+# Compiled Python files
+__pycache__/
+*.pyc
+*.pyo/
+*.pyd/
+
+# Compiled JavaScript files
+node_modules/
+build/
+dist/
+
+# Logs
+*.log
+log.txt
+
+# Temporary files
+*.tmp
+*.temp
+
+# IntelliJ IDEA-specific files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db/
+
+# React build output
+/build/
+/.cache/
+
+# Django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Spring Boot
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+
+# Gradle
+.gradle/
+build/
+
+# Misc
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
