@@ -47,7 +47,7 @@ export const AuthContextProvider = ({ children }) => {
         const userRef = doc(db, 'users', user.uid);
         const docSnap = await getDoc(userRef);
 
-        const tableUIDsEndpoint =  `${process.env.REACT_APP_SPRING_BOOT_API_ENDPOINT}/service/all-tables`;
+        const tableUIDsEndpoint =  `api/service/all-tables`;
 
         try {
             const response = await fetch(tableUIDsEndpoint);

@@ -21,7 +21,7 @@ const HomePage = () => {
             setSuggestions([]);
             return;
         }
-        const suggestionsEndpoint = `${process.env.REACT_APP_SPRING_BOOT_API_ENDPOINT}/api/suggest?query=${newQuery}`
+        const suggestionsEndpoint = `/api/suggest?query=${newQuery}`
         const response = await fetch(suggestionsEndpoint, {credentials: 'include', headers: {'Content-Type': 'application/json'}});
         const data = await response.json();
         setSuggestions(data.suggestions);

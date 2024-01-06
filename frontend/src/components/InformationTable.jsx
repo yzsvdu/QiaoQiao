@@ -15,7 +15,7 @@ const InformationTable = ({query_}) => {
     };
     const handleQuerySearch = () => {
         setResult(null);
-        const defineEndpoint = `${process.env.REACT_APP_SPRING_BOOT_API_ENDPOINT}/api/define?query=${query}`;
+        const defineEndpoint = `/api/define?query=${query}`;
         fetch(defineEndpoint)
             .then((response) => response.json())
             .then((data) => {

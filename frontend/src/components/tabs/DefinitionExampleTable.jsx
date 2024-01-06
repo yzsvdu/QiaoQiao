@@ -12,7 +12,7 @@ const DefinitionExampleTable = ({result, query}) => {
 
     useEffect(() => {
         setLoading(true);
-        const examplesEndpoint = `${process.env.REACT_APP_DJANGO_API_ENDPOINT}/dictionary/examples?query=${query}`;
+        const examplesEndpoint = `/services/dictionary/examples?query=${query}`;
         fetch(examplesEndpoint).then((response) => response.json()).then((data) => {
             setSentencePairs(data.sentence_pairs)
         }).finally(() => {
@@ -20,7 +20,7 @@ const DefinitionExampleTable = ({result, query}) => {
         })
 
         if (pinyin.length === 0) {
-            const pinyinEndpoint = `${process.env.REACT_APP_DJANGO_API_ENDPOINT}/dictionary/pinyin?query=${query}`;
+            const pinyinEndpoint = `/services/dictionary/pinyin?query=${query}`;
             fetch(pinyinEndpoint).then((response) => response.json()).then((data) => {
                 const concatenatedPinyin = data.pinyin.map((p) => p[0]).join(' ');
                 setPinyin(concatenatedPinyin);
@@ -29,7 +29,7 @@ const DefinitionExampleTable = ({result, query}) => {
     }, [query])
 
     const handleSubwordClick = (subword) => {
-        const defineEndpoint = `${process.env.REACT_APP_SPRING_BOOT_API_ENDPOINT}/api/define?query=${subword}`;
+        const defineEndpoint = `api/define?query=${subword}`;
         fetch(defineEndpoint)
             .then((response) => response.json())
             .then((data) => {

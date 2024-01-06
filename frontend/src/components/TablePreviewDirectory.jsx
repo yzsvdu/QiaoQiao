@@ -6,7 +6,7 @@ const TablePreviewDirectory = ({handleWordClick}) => {
     const [leftPreviews, setLeftPreviews] = useState([]);
     const [rightPreviews, setRightPreviews] = useState([]);
     const loadTablePreviews = async () => {
-        const curatedBoardsEndpoint = `${process.env.REACT_APP_SPRING_BOOT_API_ENDPOINT}/table/table-previews`;
+        const curatedBoardsEndpoint = `api/table/table-previews`;
         const response = await fetch(curatedBoardsEndpoint);
         const data = await response.json();
         setLeftPreviews(data.leftPreviews);

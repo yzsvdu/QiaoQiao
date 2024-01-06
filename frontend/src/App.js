@@ -10,7 +10,7 @@ function App() {
 
     useEffect(async () => {
         document.title = 'Qiao一Qiao App'
-        const serviceEndpoint = `${process.env.REACT_APP_SPRING_BOOT_API_ENDPOINT}/service/all-tables`
+        const serviceEndpoint = `api/service/all-tables`
         const response = await fetch(serviceEndpoint);
         const data = await response.json();
         setTableNames(data.names)
@@ -25,7 +25,7 @@ function App() {
                         <Route
                             key={endpoint}
                             path={`/${endpoint}`}
-                            element={<TableViewPage endpoint={`${process.env.REACT_APP_SPRING_BOOT_API_ENDPOINT}/table/${endpoint}`} />}
+                            element={<TableViewPage endpoint={`api/table/${endpoint}`} />}
                         />
                     ))}
                     <Route path="/" element={<Navigate to="/home" replace />} />

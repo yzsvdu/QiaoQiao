@@ -1,0 +1,3 @@
+./src/main/java/com/vnnsnnt/qiaoqiao/services/data/Most-Frequent-Modern-Characters.csv
+./src/main/java/com/vnnsnnt/qiaoqiao/services/data/Most-Common-20000-Words-Taiwan.csv
+./src/main/java/com/vnnsnnt/qiaoqiao/services/data/Most-Common-Idioms.csv

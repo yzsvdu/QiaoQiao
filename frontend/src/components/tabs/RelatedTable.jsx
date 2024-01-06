@@ -6,7 +6,7 @@ const RelatedTable = ({query}) => {
     const [relatedEntries, setRelatedEntries] = useState(null)
 
     useEffect(() => {
-        const relatedWordsEndpoint = `${process.env.REACT_APP_SPRING_BOOT_API_ENDPOINT}/api/related?query=${query}`;
+        const relatedWordsEndpoint = `api/related?query=${query}`;
         fetch(relatedWordsEndpoint)
             .then((response) => response.json())
             .then((data) => {
