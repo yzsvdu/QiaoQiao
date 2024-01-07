@@ -1,6 +1,7 @@
 import React from 'react';
 import {Grid, Typography} from '@mui/material';
 import {Link} from 'react-router-dom';
+import {Launch} from "@mui/icons-material";
 
 const TablePreview = ({table, colorIndex, handleWordClick}) => {
     const lightColors = [
@@ -21,9 +22,10 @@ const TablePreview = ({table, colorIndex, handleWordClick}) => {
                     to={'/' + table.name.replaceAll(' ', '-').toLowerCase()}
                     style={{color: 'black'}}
                 >
-                    <Typography variant="h6" style={{textAlign: 'left'}}>
-                        {table.name}
+                    <Typography variant="h6" style={{ textAlign: 'left', display: 'flex', alignItems: 'center' }}>
+                        {table.name}<Launch style={{ marginRight: 'auto', color: 'black' }}></Launch>
                     </Typography>
+
                 </Link>
             </Grid>
             <Grid container xs={12}

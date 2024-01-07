@@ -15,16 +15,50 @@ const InformationTable = ({query_}) => {
     };
     const handleQuerySearch = () => {
         setResult(null);
-        const defineEndpoint = `/api/define?query=${query}`;
-        fetch(defineEndpoint)
+
+        const defineEndpoint = `${process.env.REACT_APP_SPRING}/api/define`;
+
+        // Create payload object
+        const payload = {
+            query: query.trim(),
+        };
+
+        // Fetch using POST method
+        fetch(defineEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        })
             .then((response) => response.json())
             .then((data) => {
-                setResult(data);
+                if (data.pinyin.length === 0) {
+                    const pinyinEndpoint = `${process.env.REACT_APP_DJANGO}/services/dictionary/pinyin?query=${query}`;
+
+                    fetch(pinyinEndpoint)
+                        .then((response) => response.json())
+                        .then((pinyinData) => {
+                            const concatenatedPinyin = pinyinData.pinyin.map((p) => p[0]).join(' ');
+
+                            // Set the new data with pinyin to the state
+                            setResult({
+                                ...data,
+                                pinyin: concatenatedPinyin,
+                            });
+                        })
+                        .catch((pinyinError) => {
+                            console.error('Error calling Pinyin API:', pinyinError);
+                        });
+                } else {
+                    setResult(data);
+                }
             })
             .catch((error) => {
                 console.error('Error calling API:', error);
             });
     };
+
 
     // initialize props
     useEffect(() => {
@@ -69,7 +103,7 @@ const InformationTable = ({query_}) => {
                 {selectedTab === 0 && result &&
                     <DefinitionExampleTable result={result} query={query}></DefinitionExampleTable>}
                 {selectedTab === 1 && result &&
-                    <DecomposedTable decomposition={result.decomposition}></DecomposedTable>}
+                    <DecomposedTable decomposition={result.decomposition} result={result}></DecomposedTable>}
                 {selectedTab === 2 && result && <StrokeOrderTable simplified={result.simplified}></StrokeOrderTable>}
                 {selectedTab === 3 && <RelatedTable query={query}></RelatedTable>}
             </Paper>

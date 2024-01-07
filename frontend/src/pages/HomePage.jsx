@@ -15,17 +15,31 @@ const HomePage = () => {
     }
 
     const handleQueryChange = async (event) => {
-        const newQuery = event.target.value;
+        const newQuery = event.target.value.trim();
         setQuery(newQuery);
+
         if (newQuery.length === 0) {
             setSuggestions([]);
             return;
         }
-        const suggestionsEndpoint = `/api/suggest?query=${newQuery}`
-        const response = await fetch(suggestionsEndpoint, {credentials: 'include', headers: {'Content-Type': 'application/json'}});
+
+        const suggestionsEndpoint = `${process.env.REACT_APP_SPRING}/api/suggest`;
+        const payload = {
+            query: newQuery,
+        };
+
+        const response = await fetch(suggestionsEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
         const data = await response.json();
         setSuggestions(data.suggestions);
     }
+
 
     return (
         <Grid container direction='column'>

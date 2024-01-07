@@ -1,6 +1,7 @@
 package com.vnnsnnt.qiaoqiao.controllers;
 
 import com.vnnsnnt.qiaoqiao.models.*;
+import com.vnnsnnt.qiaoqiao.models.dtos.DefineRequest;
 import com.vnnsnnt.qiaoqiao.services.DictonaryService;
 import com.vnnsnnt.qiaoqiao.services.TableService;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,9 @@ public class TokenSearchController {
         this.tableService = tableService;
     }
 
-    @GetMapping("/define")
-    public ResponseEntity<DictionaryEntry> getDefinition(@RequestParam String query) {
+    @PostMapping("/define")
+    public ResponseEntity<DictionaryEntry> getDefinition(@RequestBody DefineRequest defineRequest) {
+        String query = defineRequest.getQuery().replaceAll("[^\\p{Script=Han}]", "");
         List<DictionaryEntry> dictionaryEntries = new ArrayList<>();
 
         DictionaryEntry dictionaryServiceEntry = dictonaryService.getChineseToEnglishMap().get(query);
@@ -56,7 +58,7 @@ public class TokenSearchController {
             dictionaryEntry.setSimplified(fullSimplifiedString.toString());
             dictionaryEntry.setTraditional(fullTraditionalString.toString());
             dictionaryEntry.setDecomposition(decomposition);
-            dictionaryEntry.setDefinitions("");
+            dictionaryEntry.setDefinitions("Definition Not Found. Check Word Decomposition or Example Sentences for more information.");
             dictionaryEntry.setPinyin("");
 
             return ResponseEntity.ok(dictionaryEntry);
@@ -122,18 +124,28 @@ public class TokenSearchController {
         return ResponseEntity.ok(relatedEntries);
     }
 
-    @GetMapping("/suggest")
-    public ResponseEntity<SuggestedEntries> getSuggestions(@RequestParam String query) {
+    @PostMapping("/suggest")
+    public ResponseEntity<SuggestedEntries> getSuggestions(@RequestBody DefineRequest defineRequest) {
+        String query = defineRequest.getQuery().replaceAll("[^\\p{Script=Han}]", "");
+
         SuggestedEntries suggestedEntries = new SuggestedEntries();
+
         List<String> suggestions = dictonaryService.getChineseToEnglishMap().keySet().stream()
                 .filter(dictionaryEntry -> dictionaryEntry.startsWith(query))
                 .sorted(Comparator.comparingInt(String::length))
                 .limit(10)
                 .collect(Collectors.toList());
 
+        for (int i = 0; i < tableService.getTables().size() && suggestions.size() < 10; i++) {
+            HashMap<String, DictionaryEntry> map = tableService.getTables().get(i).getDictionary();
+            for (String key : map.keySet()) {
+                if (key.startsWith(query)) {
+                    suggestions.add(key);
+                }
+            }
+        }
         suggestedEntries.setSuggestions(suggestions);
         return ResponseEntity.ok(suggestedEntries);
     }
-
 }
 

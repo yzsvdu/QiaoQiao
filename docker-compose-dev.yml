@@ -8,6 +8,8 @@ services:
             dockerfile: ./docker/services/Dockerfile
         ports:
             -   8000:8000
+        volumes:
+            -   ./services:/app/services
     backend:
         restart: unless-stopped
         build:
@@ -15,12 +17,19 @@ services:
             dockerfile: ./docker/backend/Dockerfile
         ports:
             -   8080:8080
+        volumes:
+            -   ./backend:/app
     frontend:
         restart: unless-stopped
         build:
             context: .
             dockerfile: ./docker/nginx/Dockerfile
+        stdin_open: true
         ports:
-            - 80:80
+            - 3000:3000
+        env_file:
+            -   ./frontend/.env.development
         volumes:
             - ./docker/nginx/development:/etc/nginx/conf.d
+            - ./frontend:/app/frontend:delegated
+            - /app/frontend/node_modules/

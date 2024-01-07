@@ -6,31 +6,33 @@ import {Clear} from "@mui/icons-material";
 
 const DefinitionExampleTable = ({result, query}) => {
     const [loading, setLoading] = useState(false);
-    const [pinyin, setPinyin] = useState(result.pinyin)
     const [sentencePairs, setSentencePairs] = useState([])
     const [subSearchs, setSubSearches] = useState([result])
 
     useEffect(() => {
         setLoading(true);
-        const examplesEndpoint = `/services/dictionary/examples?query=${query}`;
+        const examplesEndpoint = `${process.env.REACT_APP_DJANGO}/services/dictionary/examples?query=${query}`;
         fetch(examplesEndpoint).then((response) => response.json()).then((data) => {
             setSentencePairs(data.sentence_pairs)
         }).finally(() => {
             setLoading(false);
         })
-
-        if (pinyin.length === 0) {
-            const pinyinEndpoint = `/services/dictionary/pinyin?query=${query}`;
-            fetch(pinyinEndpoint).then((response) => response.json()).then((data) => {
-                const concatenatedPinyin = data.pinyin.map((p) => p[0]).join(' ');
-                setPinyin(concatenatedPinyin);
-            })
-        }
     }, [query])
 
     const handleSubwordClick = (subword) => {
-        const defineEndpoint = `api/define?query=${subword}`;
-        fetch(defineEndpoint)
+        const defineEndpoint = `${process.env.REACT_APP_SPRING}/api/define`;
+
+        const payload = {
+            query: subword
+        };
+
+        fetch(defineEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        })
             .then((response) => response.json())
             .then((data) => {
                 setSubSearches((prev) => [...prev, data]);
@@ -38,7 +40,7 @@ const DefinitionExampleTable = ({result, query}) => {
             .catch((error) => {
                 console.error('Error calling API:', error);
             });
-    }
+    };
 
     const handleSubsearchClick = (index) => {
         const updatedSubSearchs = [
@@ -117,11 +119,13 @@ const DefinitionExampleTable = ({result, query}) => {
                             </Typography>
                             <Typography variant="h6" style={{marginBottom: '12px', color: '#0066cc'}}>
                                 <span
-                                    style={{color: '#333'}}>Pinyin:</span> {pinyinify(search.pinyin.replaceAll('[', '').replaceAll(']', ''))}
+                                    style={{color: '#333'}}>Pinyin:
+                                </span> {pinyinify(search.pinyin.replaceAll('[', '').replaceAll(']', ''))}
                             </Typography>
                             <Typography variant="h6" style={{marginBottom: '12px', color: '#0066cc'}}>
                                 <span
-                                    style={{color: '#333'}}>Definitions:</span> {search.definitions.replaceAll('/', '; ')}
+                                    style={{color: '#333'}}>Definitions:
+                                </span> {search.definitions.replaceAll('/', '; ')}
                             </Typography>
                         </div>
                     </Paper>

@@ -47,7 +47,7 @@ export const AuthContextProvider = ({ children }) => {
         const userRef = doc(db, 'users', user.uid);
         const docSnap = await getDoc(userRef);
 
-        const tableUIDsEndpoint =  `api/service/all-tables`;
+        const tableUIDsEndpoint = `${process.env.REACT_APP_SPRING}/api/service/all-tables`;
 
         try {
             const response = await fetch(tableUIDsEndpoint);
@@ -69,6 +69,7 @@ export const AuthContextProvider = ({ children }) => {
         } catch (error) {
             console.error("Error setting up account:", error);
             alert("Failed to set up account. Try again!");
+            logOut();
         }
     };
     const logOut = () => {

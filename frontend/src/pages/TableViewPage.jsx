@@ -27,10 +27,11 @@ const TableViewPage = ({endpoint}) => {
     const [learnedWords, setLearnedWords] = useState(null);
     const [filteredList, setFilteredList] = useState([]);
     const [tbSizeParam, setTbSizeParam] = useState(2);
+    const [tableSize, setTableSize] = useState(0);
 
     const [tableConfig, setTableConfig] = useState({
         hideLearned: false,
-        singleChar: false,
+        traditional: true,
         pinyin: true,
         definition: true,
     });
@@ -47,7 +48,8 @@ const TableViewPage = ({endpoint}) => {
         const response = await fetch(fetchAddress);
         const data = await response.json();
         setTitle(data.name);
-        setTableUID(data.uid)
+        setTableUID(data.uid);
+        setTableSize(data.size);
         if (jumpToIndex) {
             setScrollToIndex(jumpToIndex);
         }
@@ -329,7 +331,7 @@ const TableViewPage = ({endpoint}) => {
                         <div style={{display: "flex", flexDirection: "column"}}>
                             <Typography variant="h6">{word.simplified}</Typography>
                             <Typography
-                                variant="h6">{word.simplified !== word.traditional ? `[${word.traditional}]` : ''}</Typography>
+                                variant="h6">{word.simplified !== word.traditional && tableConfig.traditional ? `[${word.traditional}]` : ''}</Typography>
                         </div>
                     </Grid>
                     {tableConfig.pinyin ? (
@@ -385,7 +387,7 @@ const TableViewPage = ({endpoint}) => {
                                 </Grid>
                                 <Grid container direction="row">
                                     {/* Checkboxes */}
-                                    {['hideLearned', 'singleChar', 'pinyin', 'definition'].map((configKey, index) => (
+                                    {['hideLearned', 'traditional', 'pinyin', 'definition'].map((configKey, index) => (
                                         <Grid key={index} container xs={3} style={{alignItems: 'center'}}>
                                             <Checkbox
                                                 checked={tableConfig[configKey]}
@@ -393,7 +395,7 @@ const TableViewPage = ({endpoint}) => {
                                             />
                                             <Typography variant="subtitle1">
                                                 {configKey === 'hideLearned' ? 'Hide Learned' :
-                                                    configKey === 'singleChar' ? 'Single Char' :
+                                                    configKey === 'traditional' ? 'Traditional' :
                                                         configKey === 'pinyin' ? 'Show Pinyin' :
                                                             'Show Def.'}
                                             </Typography>
@@ -446,7 +448,9 @@ const TableViewPage = ({endpoint}) => {
                             loadedSets={loadedSets}
                             loadMoreEntries={loadMoreEntries}
                             jumpRefs={jumpRefs}
-                            scrollToWord={scrollToWord}>
+                            scrollToWord={scrollToWord}
+                            tableSize={tableSize}
+                        >
                         </Minimap>
                     </Grid>
                 </Grid>

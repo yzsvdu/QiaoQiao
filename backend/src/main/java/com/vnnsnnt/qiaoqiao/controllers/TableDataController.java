@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.primitives.Ints.min;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -42,13 +44,14 @@ public class TableDataController {
         List<DictionaryEntry> entries = new ArrayList<>();
         List<DictionaryEntry> tableEntries = dataTable.getEntries();
 
-        for (int i = startIndex; i < endIndex; i++) {
+        for (int i = startIndex; i < min(endIndex, dataTable.getEntries().size()); i++) {
             entries.add(tableEntries.get(i));
         }
 
         table.setEntries(entries);
         table.setName(dataTable.getName());
         table.setUid(dataTable.getUid());
+        table.setSize(dataTable.getEntries().size());
 
         return ResponseEntity.ok(table);
     }
@@ -76,7 +79,5 @@ public class TableDataController {
         tablePreviews.setRightPreviews(rightPreviews);
         return ResponseEntity.ok(tablePreviews);
     }
-
-
 
 }

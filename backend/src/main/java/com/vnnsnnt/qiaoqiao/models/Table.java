@@ -8,6 +8,7 @@ public class Table {
     private String uid;
     private HashMap<String, DictionaryEntry> dictionary;
     private List<DictionaryEntry> entries;
+    private Integer size;
 
     public String getName() {
         return name;
@@ -39,5 +40,13 @@ public class Table {
 
     public void setEntries(List<DictionaryEntry> entries) {
         this.entries = entries;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
     }
 }

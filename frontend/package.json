@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^13.5.0",
     "assert": "^2.1.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "firebase": "^10.7.1",
     "firebaseui": "^6.1.0",
     "hanzi-writer": "^3.6.0",
@@ -24,6 +25,7 @@
   },
   "scripts": {
     "start": "node_modules/.bin/react-scripts start",
+    "start-watch": "CHOKIDAR_USEPOLLING=true node_modules/.bin/react-scripts start",
     "build": "node_modules/.bin/react-scripts build",
     "test": "node_modules/.bin/react-scripts test",
     "eject": "node_modules/.bin/react-scripts eject"

@@ -1,7 +1,7 @@
 import React from 'react';
 import {List, ListItemText} from "@mui/material";
 
-const Minimap = ({loadedSets, loadMoreEntries, scrollToWord}) => (
+const Minimap = ({loadedSets, loadMoreEntries, scrollToWord, tableSize}) => (
     <div
         style={{
             backgroundColor: 'rgba(255, 255, 255, 0)',
@@ -17,7 +17,7 @@ const Minimap = ({loadedSets, loadMoreEntries, scrollToWord}) => (
                 overflowY: 'auto', // Make the List scrollable
             }}
         >
-            {Array(42).fill(0).map((value, index) => (
+            {Array(Math.max(Math.floor(tableSize / 500) + 1, 1)).fill(0).map((value, index) => (
                 <span
                     key={index}
                     style={{

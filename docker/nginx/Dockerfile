@@ -8,6 +8,11 @@ COPY ./frontend/package.json ./
 COPY ./frontend/package-lock.json ./
 COPY ./frontend/ ./
 RUN npm install
+
+#EXPOSE 3000
+#
+#CMD ["npm", "run", "start-watch"]
+#
 RUN npm run build
 
 # The second stage

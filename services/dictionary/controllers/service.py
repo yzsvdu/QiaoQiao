@@ -3,6 +3,7 @@ from django.http import JsonResponse
 import requests
 from pypinyin import pinyin, Style
 from dictionary.helpers.youdou_api import YoudouAPI
+import jieba
 
 MAX_CACHE_ENTRIES = 100  # Set your desired maximum number of entries
 
@@ -48,3 +49,18 @@ def get_pinyin(request):
     pinyin_result = pinyin(query, style=Style.TONE3, heteronym=True, strict=False)
     return JsonResponse({'pinyin': pinyin_result})
 
+def segment_phrase(request):
+    query = request.GET.get("query")
+    segments = list(jieba.cut(query, cut_all=False))
+    pinyin_sentence_tokenized = []
+    for token in segments:
+        pinyin_result = pinyin(token, style=Style.TONE3, heteronym=True, strict=False)
+        pinyin_str = "".join(p[0] for p in pinyin_result)
+        pinyin_sentence_tokenized.append(pinyin_str)
+
+    response_data = {
+        'chinese_segments': segments,
+        'pinyin_segments': pinyin_sentence_tokenized,
+    }
+
+    return JsonResponse(response_data)
