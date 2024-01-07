@@ -35,7 +35,26 @@ const DefinitionExampleTable = ({result, query}) => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setSubSearches((prev) => [...prev, data]);
+                if (data.pinyin.length === 0) {
+                    const pinyinEndpoint = `${process.env.REACT_APP_DJANGO}/services/dictionary/pinyin?query=${query}`;
+
+                    fetch(pinyinEndpoint)
+                        .then((response) => response.json())
+                        .then((pinyinData) => {
+                            const concatenatedPinyin = pinyinData.pinyin.map((p) => p[0]).join(' ');
+
+                            const newData = { ...data, pinyin: concatenatedPinyin };
+                            setSubSearches((prev) => [...prev, newData]);
+
+                            // Set the new data with pinyin to the state
+
+                        })
+                        .catch((pinyinError) => {
+                            console.error('Error calling Pinyin API:', pinyinError);
+                        });
+                } else {
+                    setSubSearches((prev) => [...prev, data]);
+                }
             })
             .catch((error) => {
                 console.error('Error calling API:', error);

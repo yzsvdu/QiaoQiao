@@ -58,7 +58,7 @@ public class TokenSearchController {
             dictionaryEntry.setSimplified(fullSimplifiedString.toString());
             dictionaryEntry.setTraditional(fullTraditionalString.toString());
             dictionaryEntry.setDecomposition(decomposition);
-            dictionaryEntry.setDefinitions("Definition Not Found. Check Word Decomposition or Example Sentences for more information.");
+            dictionaryEntry.setDefinitions("Check Word Decomposition or Example Sentences for more information.");
             dictionaryEntry.setPinyin("");
 
             return ResponseEntity.ok(dictionaryEntry);
