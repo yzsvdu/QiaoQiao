@@ -3,7 +3,7 @@ Chinese Character and Words Learning Web App [Web App Available for Use Here](ht
 
 Access organized vocabulary tables, mark learned entries, and delve into a comprehensive Character/Word analysis section, featuring example sentences, definitions, word decomposition, stroke order, and related words.
 
-### Made with React, Springboot, Django, and served with Nginx
+### Made with React "/frontend", Springboot "/backend", Django "/services", and served with Nginx 
 
 ## Site Preview
 1. Home page, where definitions can be looked up and tables are linked.
